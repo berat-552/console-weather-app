@@ -17,17 +17,32 @@ bool userWantsToContinue = true;
 while (userWantsToContinue)
 {
     Console.Clear();
-    Console.Write("Please enter the city name you want weather data of: ");
+    Console.ResetColor();
+    Console.Write("Enter city name for weather data: ");
     string cityNameInput = Console.ReadLine()!;
 
-    WeatherData? weatherData = await WeatherService.GetWeatherData(cityNameInput, apiKey);
+    Console.WriteLine("Default units is 'Metric'");
+    Console.Write("Change units to Imperial? (Y/N): ");
+
+    string unitsInput = Console.ReadLine()!.ToUpper();
+
+    bool isImperialUnits = (unitsInput.Equals("Y"));
+
+    Console.WriteLine($"Program.cs file IsImperialUnits: {isImperialUnits}");
+
+    WeatherData? weatherData = await WeatherService.GetWeatherData(cityNameInput, apiKey, isImperialUnits);
 
     if (weatherData != null)
     {
-        WeatherService.PrintWeatherDataToConsole(weatherData);
+        WeatherService.PrintWeatherDataToConsole(weatherData, isImperialUnits);
 
-        Console.Write("Do you want to save this data to a text file? (Y/N): ");
-        string saveToFile = Console.ReadLine()!.ToUpper();
+        string saveToFile = "";
+
+        do
+        {
+            Console.Write("Would you like to save the weather data to a file? (Y/N): ");
+            saveToFile = Console.ReadLine()!.Trim().ToUpper();
+        } while (saveToFile != "Y" && saveToFile != "N");
 
         if (saveToFile == "Y")
         {
@@ -36,6 +51,10 @@ while (userWantsToContinue)
             WeatherService.SaveWeatherDataToFile(weatherData, filePath);
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine($"Saved weather data of {weatherData.CityName} to the text file successfully!");
+        }
+        else
+        {
+            Console.WriteLine("Weather data will not be saved to a file.");
         }
     }
     else
@@ -46,6 +65,7 @@ while (userWantsToContinue)
     }
 
     Console.WriteLine();
+    Console.ResetColor();
     Console.Write("Do you want to search for another city? (Y/N): ");
     string userResponse = Console.ReadLine()!.ToUpper();
     userWantsToContinue = (userResponse == "Y");

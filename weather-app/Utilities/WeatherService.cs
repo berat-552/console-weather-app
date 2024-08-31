@@ -10,9 +10,10 @@ namespace weather_app.Utilities
 {
     internal class WeatherService
     {
-        public static async Task<WeatherData?> GetWeatherData(string cityNameInput, string apiKey)
+        public static async Task<WeatherData?> GetWeatherData(string cityNameInput, string apiKey, bool isImperialUnits)
         {
-            string baseUrl = $"http://api.openweathermap.org/data/2.5/weather?q={cityNameInput}&appid={apiKey}&units=metric";
+            string units = isImperialUnits ? "imperial " : "metric";
+            string baseUrl = $"http://api.openweathermap.org/data/2.5/weather?q={cityNameInput}&appid={apiKey}&units={units}";
 
             HttpClient client = new HttpClient();
 
@@ -29,8 +30,13 @@ namespace weather_app.Utilities
             return null;
         }
 
-        public static void PrintWeatherDataToConsole(WeatherData weatherData)
+        public static void PrintWeatherDataToConsole(WeatherData weatherData, bool isImperialUnits)
         {
+            string temperatureSymbol = isImperialUnits ? "°F" : "°C";
+            string windSpeedUnit = isImperialUnits ? "mph" : "m/s";
+
+            Console.WriteLine($"isImperialUnits is {isImperialUnits} {temperatureSymbol} {windSpeedUnit}");
+
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine($"SUCCESSFUL");
@@ -38,10 +44,10 @@ namespace weather_app.Utilities
             Console.WriteLine("===========================================");
 
             Console.WriteLine($"City: {weatherData.CityName}");
-            Console.WriteLine($"Temperature: {weatherData.Main.Temp}°C");
-            Console.WriteLine($"Feels Like: {weatherData.Main.FeelsLike}°C");
+            Console.WriteLine($"Temperature: {weatherData.Main.Temp} {temperatureSymbol}");
+            Console.WriteLine($"Feels Like: {weatherData.Main.FeelsLike} {temperatureSymbol}");
             Console.WriteLine($"Description: {weatherData.Weather[0].Description}");
-            Console.WriteLine($"Wind Speed: {weatherData.Wind.Speed} m/s");
+            Console.WriteLine($"Wind Speed: {weatherData.Wind.Speed} {windSpeedUnit}");
             Console.WriteLine($"Pressure: {weatherData.Main.Pressure} hPa");
             Console.WriteLine($"Humidity: {weatherData.Main.Humidity}%");
             Console.WriteLine();
