@@ -1,23 +1,6 @@
 ﻿using weather_app.Utilities;
 using weather_app.Weather;
 
-// Capture location input from user
-
-// Initialize HTTP client
-
-// Store API key in variable (move to env file for security later)
-
-// Send HTTP GET request to API endpoint for weather data
-
-// If response is successful:
-//   - Deserialize into weather response
-//   - Output to user
-
-// TODO:
-//   - Ask user if they want to save data to a text file
-//   - Output contents of text file
-//   - Handle errors
-
 string apiKey = Environment.GetEnvironmentVariable("WEATHER_API_KEY")!;
 
 if (string.IsNullOrEmpty(apiKey))
