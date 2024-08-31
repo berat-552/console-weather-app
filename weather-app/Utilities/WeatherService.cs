@@ -29,6 +29,24 @@ namespace weather_app.Utilities
             return null;
         }
 
+        public static void PrintWeatherDataToConsole(WeatherData weatherData)
+        {
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine($"SUCCESSFUL");
+            Console.ResetColor();
+            Console.WriteLine("===========================================");
+
+            Console.WriteLine($"City: {weatherData.CityName}");
+            Console.WriteLine($"Temperature: {weatherData.Main.Temp}°C");
+            Console.WriteLine($"Feels Like: {weatherData.Main.FeelsLike}°C");
+            Console.WriteLine($"Description: {weatherData.Weather[0].Description}");
+            Console.WriteLine($"Wind Speed: {weatherData.Wind.Speed} m/s");
+            Console.WriteLine($"Pressure: {weatherData.Main.Pressure} hPa");
+            Console.WriteLine($"Humidity: {weatherData.Main.Humidity}%");
+            Console.WriteLine();
+        }
+
         public static void SaveWeatherDataToFile(WeatherData weatherData, string filePath)
         {
             string weatherContent = $"{weatherData.CityName},{weatherData.Main.Temp},{weatherData.Main.FeelsLike},{weatherData.Weather[0].Description},{weatherData.Wind.Speed},{weatherData.Main.Pressure},{weatherData.Main.Humidity}\n";

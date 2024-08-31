@@ -24,21 +24,8 @@ while (userWantsToContinue)
 
     if (weatherData != null)
     {
-        Console.WriteLine();
-        Console.ForegroundColor = ConsoleColor.DarkGreen;
-        Console.WriteLine($"SUCCESSFUL");
-        Console.ResetColor();
-        Console.WriteLine("===========================================");
+        WeatherService.PrintWeatherDataToConsole(weatherData);
 
-        Console.WriteLine($"City: {weatherData.CityName}");
-        Console.WriteLine($"Temperature: {weatherData.Main.Temp}°C");
-        Console.WriteLine($"Feels Like: {weatherData.Main.FeelsLike}°C");
-        Console.WriteLine($"Description: {weatherData.Weather[0].Description}");
-        Console.WriteLine($"Wind Speed: {weatherData.Wind.Speed} m/s");
-        Console.WriteLine($"Pressure: {weatherData.Main.Pressure} hPa");
-        Console.WriteLine($"Humidity: {weatherData.Main.Humidity}%");
-
-        Console.WriteLine();
         Console.Write("Do you want to save this data to a text file? (Y/N): ");
         string saveToFile = Console.ReadLine()!.ToUpper();
 
