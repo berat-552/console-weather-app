@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using weather_app.Weather;
@@ -35,8 +36,6 @@ namespace weather_app.Utilities
             string temperatureSymbol = isImperialUnits ? "°F" : "°C";
             string windSpeedUnit = isImperialUnits ? "mph" : "m/s";
 
-            Console.WriteLine($"isImperialUnits is {isImperialUnits} {temperatureSymbol} {windSpeedUnit}");
-
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine($"SUCCESSFUL");
@@ -53,11 +52,40 @@ namespace weather_app.Utilities
             Console.WriteLine();
         }
 
+        public static void InitializeFile(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                File.WriteAllText(filePath, "[]");
+            }
+        }
+
         public static void SaveWeatherDataToFile(WeatherData weatherData, string filePath)
         {
-            string weatherContent = $"{weatherData.CityName},{weatherData.Main.Temp},{weatherData.Main.FeelsLike},{weatherData.Weather[0].Description},{weatherData.Wind.Speed},{weatherData.Main.Pressure},{weatherData.Main.Humidity}\n";
+            List<WeatherData> weatherDataList;
 
-            File.AppendAllText(filePath, weatherContent);
+            InitializeFile(filePath); // Ensure the file is initialized
+
+            // Check if the file exists and read the existing data
+            if (File.Exists(filePath))
+            {
+                string existingJson = File.ReadAllText(filePath);
+                weatherDataList = JsonConvert.DeserializeObject<List<WeatherData>>(existingJson) ?? new List<WeatherData>();
+            }
+            else
+            {
+                weatherDataList = new List<WeatherData>();
+            }
+
+            // Add the new weather data to the list
+            weatherDataList.Add(weatherData);
+
+            // Serialize the list to a JSON string
+            string jsonString = JsonConvert.SerializeObject(weatherDataList, Formatting.Indented);
+
+            File.WriteAllText(filePath, jsonString);
         }
+
+        public static string ReadJsonFromFile(string filePath) => File.Exists(filePath) ? File.ReadAllText(filePath) : string.Empty;
     }
 }

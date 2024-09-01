@@ -12,6 +12,7 @@ if (string.IsNullOrEmpty(apiKey))
 }
 
 Console.WriteLine("Welcome to Weather App!");
+
 bool userWantsToContinue = true;
 
 while (userWantsToContinue)
@@ -27,8 +28,6 @@ while (userWantsToContinue)
     string unitsInput = Console.ReadLine()!.ToUpper();
 
     bool isImperialUnits = (unitsInput.Equals("Y"));
-
-    Console.WriteLine($"Program.cs file IsImperialUnits: {isImperialUnits}");
 
     WeatherData? weatherData = await WeatherService.GetWeatherData(cityNameInput, apiKey, isImperialUnits);
 
@@ -47,7 +46,7 @@ while (userWantsToContinue)
         if (saveToFile == "Y")
         {
             // output directory
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.txt");
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
             WeatherService.SaveWeatherDataToFile(weatherData, filePath);
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine($"Saved weather data of {weatherData.CityName} to the text file successfully!");
@@ -71,5 +70,32 @@ while (userWantsToContinue)
     userWantsToContinue = (userResponse == "Y");
 }
 
+//string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
+//Console.WriteLine(WeatherService.ReadJsonFromFile(filePath));
+
 Console.WriteLine();
+
+Console.Write("Would you like to view the already existing JSON weather data? (Y/N): ");
+
+string viewJsonResponse = Console.ReadLine()!.ToUpper();
+
+if (viewJsonResponse == "Y")
+{
+    string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
+    string jsonData = WeatherService.ReadJsonFromFile(filePath);
+
+    if (!string.IsNullOrEmpty(jsonData))
+    {
+        Console.WriteLine("JSON Weather Data:");
+        Console.WriteLine();
+        Console.WriteLine(jsonData);
+        Console.WriteLine();
+    }
+    else
+    {
+        Console.WriteLine("No weather data found in the file.");
+    }
+}
+
 Console.WriteLine("Thank you for using Weather App!");
+Console.WriteLine("Goodbye!");
