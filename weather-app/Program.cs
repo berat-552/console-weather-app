@@ -70,9 +70,6 @@ while (userWantsToContinue)
     userWantsToContinue = (userResponse == "Y");
 }
 
-//string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
-//Console.WriteLine(WeatherService.ReadJsonFromFile(filePath));
-
 Console.WriteLine();
 
 Console.Write("Would you like to view the already existing JSON weather data? (Y/N): ");
