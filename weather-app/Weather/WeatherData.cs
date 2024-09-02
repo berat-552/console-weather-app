@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace weather_app.Weather
 {
-    internal class WeatherData
+    public class WeatherData
     {
         [JsonProperty("name")]
         public string CityName { get; set; }

@@ -96,4 +96,3 @@ if (viewJsonResponse == "Y")
 
 Console.WriteLine("Thank you for using Weather App!");
 Console.WriteLine("Goodbye!");
-

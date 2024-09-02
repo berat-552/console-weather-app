@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace weather_app.Weather
 {
-    internal class Weather
+    public class Weather
     {
         [JsonProperty("description")]
         public string Description { get; set; }

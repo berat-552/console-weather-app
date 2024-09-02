@@ -9,7 +9,7 @@ using weather_app.Weather;
 
 namespace weather_app.Utilities
 {
-    internal class WeatherService
+    public class WeatherService
     {
         public static async Task<WeatherData?> GetWeatherData(string cityNameInput, string apiKey, bool isImperialUnits)
         {
@@ -52,7 +52,7 @@ namespace weather_app.Utilities
             Console.WriteLine();
         }
 
-        public static void InitializeFile(string filePath)
+        public static void InitializeWeatherDataFile(string filePath)
         {
             if (!File.Exists(filePath))
             {
@@ -64,7 +64,7 @@ namespace weather_app.Utilities
         {
             List<WeatherData> weatherDataList;
 
-            InitializeFile(filePath); // Ensure the file is initialized
+            InitializeWeatherDataFile(filePath); // Ensure the file is initialized
 
             // Check if the file exists and read the existing data
             if (File.Exists(filePath))
