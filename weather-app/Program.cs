@@ -93,6 +93,7 @@ if (viewJsonResponse == "Y")
         Console.WriteLine("No weather data found in the file.");
     }
 }
+
 Console.Write("Would you like the erase all of the weather data? (Y/N): ");
 Console.WriteLine();
 

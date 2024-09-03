@@ -12,7 +12,7 @@ public interface IWeatherService
 
 public class WeatherServiceTests
 {
-    string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
+    private readonly string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
     private readonly Mock<IWeatherService> mockWeatherService = new Mock<IWeatherService>();
 
     [Fact]
@@ -44,18 +44,16 @@ public class WeatherServiceTests
         };
         bool isImperialUnits = false;
 
-        using (StringWriter sw = new StringWriter())
-        {
-            Console.SetOut(sw);
+        using StringWriter sw = new StringWriter();
+        Console.SetOut(sw);
 
-            // Act
-            WeatherService.PrintWeatherDataToConsole(weatherData, isImperialUnits);
+        // Act
+        WeatherService.PrintWeatherDataToConsole(weatherData, isImperialUnits);
 
-            // Assert
-            string result = sw.ToString();
-            Assert.Contains("City: London", result);
-            Assert.Contains("Temperature: 15 °C", result);
-        }
+        // Assert
+        string result = sw.ToString();
+        Assert.Contains("City: London", result);
+        Assert.Contains("Temperature: 15 °C", result);
     }
 
     [Fact]
@@ -118,5 +116,4 @@ public class WeatherServiceTests
         // check that file no longer exists
         Assert.True(!File.Exists(filePath));
     }
-
 }
