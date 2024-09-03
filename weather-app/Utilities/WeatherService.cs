@@ -13,13 +13,13 @@ namespace weather_app.Utilities
     {
         public static async Task<WeatherData?> GetWeatherData(string cityNameInput, string apiKey, bool isImperialUnits)
         {
-            string units = isImperialUnits ? "imperial " : "metric";
+            string units = isImperialUnits ? "imperial" : "metric";
             string baseUrl = $"http://api.openweathermap.org/data/2.5/weather?q={cityNameInput}&appid={apiKey}&units={units}";
 
             HttpClient client = new HttpClient();
 
             HttpResponseMessage response = client.GetAsync(baseUrl).Result;
-
+            
             if (response.IsSuccessStatusCode)
             {
                 string responseAsString = await response.Content.ReadAsStringAsync();
@@ -87,5 +87,15 @@ namespace weather_app.Utilities
         }
 
         public static string ReadJsonFromFile(string filePath) => File.Exists(filePath) ? File.ReadAllText(filePath) : string.Empty;
+
+        public static string GetJsonFileLocation() => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
+
+        public static void EraseAllWeatherData(string filepath)
+        {
+            if (File.Exists(filepath))
+            {
+                File.Delete(filepath);
+            }
+        }
     }
 }
