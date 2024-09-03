@@ -46,7 +46,7 @@ while (userWantsToContinue)
         if (saveToFile == "Y")
         {
             // output directory
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
+            string filePath = WeatherService.GetJsonFileLocation();
             WeatherService.SaveWeatherDataToFile(weatherData, filePath);
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine($"Saved weather data of {weatherData.CityName} to the text file successfully!");
@@ -78,7 +78,7 @@ string viewJsonResponse = Console.ReadLine()!.ToUpper();
 
 if (viewJsonResponse == "Y")
 {
-    string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
+    string filePath = WeatherService.GetJsonFileLocation();
     string jsonData = WeatherService.ReadJsonFromFile(filePath);
 
     if (!string.IsNullOrEmpty(jsonData))
@@ -92,6 +92,22 @@ if (viewJsonResponse == "Y")
     {
         Console.WriteLine("No weather data found in the file.");
     }
+}
+Console.Write("Would you like the erase all of the weather data? (Y/N): ");
+Console.WriteLine();
+
+string deleteJsonFileResponse = Console.ReadLine()!.ToUpper();  
+
+if (deleteJsonFileResponse == "Y")
+{
+    WeatherService.EraseAllWeatherData(WeatherService.GetJsonFileLocation());
+    Console.WriteLine();
+    Console.WriteLine("Successfully deleted weather data");
+    Console.WriteLine();
+} else
+{
+    Console.WriteLine("User chose the option to NOT delete weather data");
+    Console.WriteLine();
 }
 
 Console.WriteLine("Thank you for using Weather App!");
