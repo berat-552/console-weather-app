@@ -7,16 +7,17 @@ using Xunit;
 public interface IWeatherService
 {
     Task<WeatherData?> GetWeatherData(string cityName, string apiKey, bool isImperialUnits);
+    void EraseAllWeatherData(string filepath);
 }
 
 public class WeatherServiceTests
 {
     string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
+    private readonly Mock<IWeatherService> mockWeatherService = new Mock<IWeatherService>();
 
     [Fact]
-    public async Task GetWeatherData_MethodIsCalled()
+    public async Task GetWeatherData_MethodIsCalledAndNotNull()
     {
-        Mock<IWeatherService> mockWeatherService = new Mock<IWeatherService>();
         string cityName = "London";
         string apiKey = Environment.GetEnvironmentVariable("WEATHER_API_KEY")!; 
         bool isImperialUnits = false;
@@ -26,6 +27,7 @@ public class WeatherServiceTests
         WeatherData? result = await WeatherService.GetWeatherData(cityName, apiKey, isImperialUnits);
 
         mockWeatherService.Verify(service => service.GetWeatherData(cityName, apiKey, isImperialUnits), Times.Once);
+
         Assert.NotNull(result);
         Assert.Equal(cityName, result.CityName);
     }
@@ -98,6 +100,23 @@ public class WeatherServiceTests
 
         Assert.NotNull(jsonContent);
         Assert.IsType<string>(jsonContent);
+    }
+
+    [Fact]
+    public void GetJsonFileLocation_GetsTheFileLocation()
+    {
+        string fileLocation = WeatherService.GetJsonFileLocation();
+        Assert.NotNull(fileLocation);
+        Assert.IsType<string>(fileLocation);
+    }
+
+    [Fact]
+    public void EraseAllWeatherData_ErasesWeatherDataFile()
+    {
+        mockWeatherService.Object.EraseAllWeatherData(filePath);
+        mockWeatherService.Verify(verify => verify.EraseAllWeatherData(filePath), Times.Once());
+        // check that file no longer exists
+        Assert.True(!File.Exists(filePath));
     }
 
 }
