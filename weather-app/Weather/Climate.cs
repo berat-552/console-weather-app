@@ -22,6 +22,6 @@ public class Climate<TUnits> : IClimate
     public override string ToString() =>
         $"Temperature: {Temperature} {_units.Temperature}\n" +
         $"Feels Like: {FeelsLike} {_units.Temperature}\n" +
-        $"Pressure: {Pressure} hPa" +
-        $"Humidity: {Humidity}%";
+        $"Pressure: {Pressure} hPa\n" +
+        $"Humidity: {Humidity}%\n";
 }
