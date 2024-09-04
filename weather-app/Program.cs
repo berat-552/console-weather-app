@@ -33,6 +33,7 @@ while (userWantsToContinue)
     // throw error earlier
     if (weatherData != null)
     {
+        Console.WriteLine();
         Console.WriteLine(weatherData);
         string saveToFile; 
 
@@ -88,14 +89,14 @@ if (viewJsonResponse == "Y")
     }
     else
     {
-        Console.WriteLine("No weather data found in the file."); 
+        Console.WriteLine("No weather data found in the file.");
+        Console.WriteLine();
     }
 }
 
 if (File.Exists(WeatherService.GetJsonFileLocation()))
 {
     Console.Write("Would you like the erase all of the weather data? (Y/N): ");
-    //Console.WriteLine();
 
     string deleteJsonFileResponse = Console.ReadLine()!.ToUpper();
 
