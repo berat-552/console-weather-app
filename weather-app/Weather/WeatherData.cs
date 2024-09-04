@@ -22,12 +22,9 @@ public class WeatherData<TUnits> : IWeatherData
 
     public override string ToString()
     {
-;
-        //Console.WriteLine($"Description: {weatherData.Weather[0].Description}");
-        //Console.WriteLine($"Wind Speed: {weatherData.Wind.Speed} {windSpeedUnit}");
-
         return $"City: {CityName}\n" +
+            $"Description: {Weather[0].Description}\n" +
             $"{Climate}\n" +
-            $"Wind Speed: {Wind.Speed}\n";
+            $"Wind Speed: {Wind.Speed} {Units.Speed}\n";
     }
 }
