@@ -8,8 +8,3 @@ public class Wind
     [JsonProperty("speed")]
     public double Speed { get; set; }
 }
-
-public interface IWind
-{
-    public double Speed { get; set; }
-}
