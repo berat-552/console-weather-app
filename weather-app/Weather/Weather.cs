@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace weather_app.Weather
+namespace weather_app.Weather;
+
+public class Weather
 {
-    public class Weather
-    {
-        [JsonProperty("description")]
-        public string Description { get; set; }
-    }
- 
+    [JsonProperty("description")]
+    public string Description { get; set; } = string.Empty;
 }
+

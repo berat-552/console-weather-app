@@ -4,29 +4,32 @@ using weather_app.Utilities;
 using weather_app.Weather;
 using Xunit;
 
-public interface IWeatherService
+public interface IWeatherServiceMock
 {
-    Task<WeatherData?> GetWeatherData(string cityName, string apiKey, bool isImperialUnits);
+    Task<WeatherData?> GetWeatherData(string cityName, string weatherApiKey, bool isImperialUnits);
     void EraseAllWeatherData(string filepath);
+    void PrintWeatherDataToConsole(WeatherData weatherData, bool isImperialUnits);
+    void InitializeWeatherDataFile(string filepath);
+    void SaveWeatherDataToFile(WeatherData weatherData, string filepath);
 }
 
 public class WeatherServiceTests
 {
-    private readonly string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
-    private readonly Mock<IWeatherService> mockWeatherService = new Mock<IWeatherService>();
+    private string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
+    private readonly Mock<IWeatherServiceMock> mockWeatherService = new Mock<IWeatherServiceMock>();
 
     [Fact]
     public async Task GetWeatherData_MethodIsCalledAndNotNull()
     {
         string cityName = "London";
-        string apiKey = Environment.GetEnvironmentVariable("WEATHER_API_KEY")!; 
+        string weatherApiKey = Environment.GetEnvironmentVariable("WEATHER_API_KEY")!;
         bool isImperialUnits = false;
 
-        await mockWeatherService.Object.GetWeatherData(cityName, apiKey, isImperialUnits);
+        await mockWeatherService.Object.GetWeatherData(cityName, weatherApiKey, isImperialUnits);
 
-        WeatherData? result = await WeatherService.GetWeatherData(cityName, apiKey, isImperialUnits);
+        WeatherData? result = await WeatherService.GetWeatherData(cityName, weatherApiKey, isImperialUnits);
 
-        mockWeatherService.Verify(service => service.GetWeatherData(cityName, apiKey, isImperialUnits), Times.Once);
+        mockWeatherService.Verify(service => service.GetWeatherData(cityName, weatherApiKey, isImperialUnits), Times.Once);
 
         Assert.NotNull(result);
         Assert.Equal(cityName, result.CityName);
@@ -38,19 +41,20 @@ public class WeatherServiceTests
         WeatherData weatherData = new WeatherData
         {
             CityName = "London",
-            Main = new Main { Temp = 15.0, FeelsLike = 14.0, Pressure = 1012, Humidity = 80 },
+            Main = new Climate { Temp = 15.0, FeelsLike = 14.0, Pressure = 1012, Humidity = 80 },
             Weather = new List<Weather> { new Weather { Description = "clear sky" } },
             Wind = new Wind { Speed = 5.0 }
         };
         bool isImperialUnits = false;
 
+        mockWeatherService.Object.PrintWeatherDataToConsole(weatherData, isImperialUnits);
+
         using StringWriter sw = new StringWriter();
         Console.SetOut(sw);
 
-        // Act
         WeatherService.PrintWeatherDataToConsole(weatherData, isImperialUnits);
+        mockWeatherService.Verify(service => service.PrintWeatherDataToConsole(weatherData, isImperialUnits), Times.Once);
 
-        // Assert
         string result = sw.ToString();
         Assert.Contains("City: London", result);
         Assert.Contains("Temperature: 15 °C", result);
@@ -59,11 +63,10 @@ public class WeatherServiceTests
     [Fact]
     public void InitializeWeatherDataFile_InitializesFileSuccessfully()
     {
-        // output directory
-        string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
-
         WeatherService.InitializeWeatherDataFile(filePath);
+        mockWeatherService.Object.InitializeWeatherDataFile(filePath);
 
+        mockWeatherService.Verify(service => service.InitializeWeatherDataFile(filePath), Times.Once);
         Assert.True(File.Exists(filePath), "The weather data file was not created.");
     }
 
@@ -73,12 +76,15 @@ public class WeatherServiceTests
         WeatherData weatherData = new WeatherData
         {
             CityName = "London",
-            Main = new Main { Temp = 15.0, FeelsLike = 14.0, Pressure = 1012, Humidity = 80 },
+            Main = new Climate { Temp = 15.0, FeelsLike = 14.0, Pressure = 1012, Humidity = 80 },
             Weather = new List<Weather> { new Weather { Description = "clear sky" } },
             Wind = new Wind { Speed = 5.0 }
         };
 
+      
+
         WeatherService.SaveWeatherDataToFile(weatherData, filePath);
+        mockWeatherService.Object.SaveWeatherDataToFile(weatherData, filePath);
 
         Assert.True(File.Exists(filePath), "The weather data file was not created.");
         string fileContents = File.ReadAllText(filePath);

@@ -1,9 +1,9 @@
 ﻿using weather_app.Utilities;
 using weather_app.Weather;
 
-string apiKey = Environment.GetEnvironmentVariable("WEATHER_API_KEY")!;
+string weatherApiKey = Environment.GetEnvironmentVariable("WEATHER_API_KEY")!;
 
-if (string.IsNullOrEmpty(apiKey))
+if (string.IsNullOrEmpty(weatherApiKey))
 {
     Console.ForegroundColor = ConsoleColor.Red;
     Console.WriteLine("API key not found. Please set the WEATHER_API_KEY environment variable.");
@@ -29,13 +29,12 @@ while (userWantsToContinue)
 
     bool isImperialUnits = (unitsInput.Equals("Y"));
 
-    WeatherData? weatherData = await WeatherService.GetWeatherData(cityNameInput, apiKey, isImperialUnits);
-
+    IWeatherData? weatherData = await WeatherService.GetWeatherData(cityNameInput, weatherApiKey, isImperialUnits);
+    // throw error earlier
     if (weatherData != null)
     {
-        WeatherService.PrintWeatherDataToConsole(weatherData, isImperialUnits);
-
-        string saveToFile = "";
+        Console.WriteLine(weatherData);
+        string saveToFile; 
 
         do
         {
@@ -71,7 +70,6 @@ while (userWantsToContinue)
 }
 
 Console.WriteLine();
-
 Console.Write("Would you like to view the already existing JSON weather data? (Y/N): ");
 
 string viewJsonResponse = Console.ReadLine()!.ToUpper();
@@ -90,25 +88,31 @@ if (viewJsonResponse == "Y")
     }
     else
     {
-        Console.WriteLine("No weather data found in the file.");
+        Console.WriteLine("No weather data found in the file."); 
     }
 }
 
-Console.Write("Would you like the erase all of the weather data? (Y/N): ");
-Console.WriteLine();
-
-string deleteJsonFileResponse = Console.ReadLine()!.ToUpper();  
-
-if (deleteJsonFileResponse == "Y")
+if (File.Exists(WeatherService.GetJsonFileLocation()))
 {
-    WeatherService.EraseAllWeatherData(WeatherService.GetJsonFileLocation());
-    Console.WriteLine();
-    Console.WriteLine("Successfully deleted weather data");
-    Console.WriteLine();
-} else
-{
-    Console.WriteLine("User chose the option to NOT delete weather data");
-    Console.WriteLine();
+    Console.Write("Would you like the erase all of the weather data? (Y/N): ");
+    //Console.WriteLine();
+
+    string deleteJsonFileResponse = Console.ReadLine()!.ToUpper();
+
+    if (deleteJsonFileResponse == "Y")
+    {
+        WeatherService.EraseAllWeatherData(WeatherService.GetJsonFileLocation());
+        Console.WriteLine();
+        Console.WriteLine("Successfully deleted weather data");
+        Console.WriteLine();
+    }
+    else
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine("User chose the option to NOT delete weather data");
+        Console.WriteLine();
+        Console.ResetColor();
+    }
 }
 
 Console.WriteLine("Thank you for using Weather App!");
