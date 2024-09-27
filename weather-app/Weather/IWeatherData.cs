@@ -1,4 +1,6 @@
-﻿namespace weather_app.Weather;
+﻿using weather_app.Weather.Units;
+
+namespace weather_app.Weather;
 
 public interface IWeatherData
 {
