@@ -35,7 +35,7 @@ while (userWantsToContinue)
     {
         Console.WriteLine();
         Console.WriteLine(weatherData);
-        string saveToFile; 
+        string saveToFile;
 
         do
         {
@@ -45,11 +45,22 @@ while (userWantsToContinue)
 
         if (saveToFile == "Y")
         {
-            // output directory
-            string filePath = WeatherService.GetJsonFileLocation();
-            WeatherService.SaveWeatherDataToFile(weatherData, filePath);
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.WriteLine($"Saved weather data of {weatherData.CityName} to the text file successfully!");
+            if (isImperialUnits)
+            {
+                string filePath = WeatherService.GetJsonFileLocation("weather_data_imperial.json");
+                WeatherService.InitializeWeatherDataFile(filePath);
+                WeatherService.SaveWeatherDataToFile(weatherData, filePath);
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine($"Saved weather data of {weatherData.CityName} to the text file successfully!");
+            }
+            else
+            {
+                // output directory
+                string filePath = WeatherService.GetJsonFileLocation("weather_data_metric.json");
+                WeatherService.SaveWeatherDataToFile(weatherData, filePath);
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine($"Saved weather data of {weatherData.CityName} to the text file successfully!");
+            }
         }
         else
         {
@@ -77,15 +88,20 @@ string viewJsonResponse = Console.ReadLine()!.ToUpper();
 
 if (viewJsonResponse == "Y")
 {
-    string filePath = WeatherService.GetJsonFileLocation();
-    string jsonData = WeatherService.ReadJsonFromFile(filePath);
+    string jsonMetricWeatherData = WeatherService.ReadJsonFromFile("weather_data_metric.json");
+    string jsonImperialWeatherData = WeatherService.ReadJsonFromFile("weather_data_imperial.json");
 
-    if (!string.IsNullOrEmpty(jsonData))
+    if (!string.IsNullOrEmpty(jsonMetricWeatherData))
     {
-        Console.WriteLine("JSON Weather Data:");
+        Console.WriteLine("=============================");
+        Console.WriteLine("JSON Weather Data (Metric):");
         Console.WriteLine();
-        Console.WriteLine(jsonData);
+        Console.WriteLine(jsonMetricWeatherData);
         Console.WriteLine();
+        Console.WriteLine("=============================");
+        Console.WriteLine("JSON Weather Data (Imperial):");
+        Console.WriteLine();
+        Console.WriteLine(jsonImperialWeatherData);
     }
     else
     {
@@ -94,7 +110,7 @@ if (viewJsonResponse == "Y")
     }
 }
 
-if (File.Exists(WeatherService.GetJsonFileLocation()))
+if (File.Exists(WeatherService.GetJsonFileLocation("weather_data.json")))
 {
     Console.Write("Would you like the erase all of the weather data? (Y/N): ");
 
@@ -102,7 +118,7 @@ if (File.Exists(WeatherService.GetJsonFileLocation()))
 
     if (deleteJsonFileResponse == "Y")
     {
-        WeatherService.EraseAllWeatherData(WeatherService.GetJsonFileLocation());
+        WeatherService.EraseAllWeatherData(WeatherService.GetJsonFileLocation("weather_data.json"));
         Console.WriteLine();
         Console.WriteLine("Successfully deleted weather data");
         Console.WriteLine();
