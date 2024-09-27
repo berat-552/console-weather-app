@@ -36,7 +36,7 @@ public class WeatherService
 
     public static void SaveWeatherDataToFile(IWeatherData weatherData, string filePath)
     {
-        List<IWeatherData> weatherDataList;
+        List<object> weatherDataList;
 
         InitializeWeatherDataFile(filePath); // Ensure the file is initialized
 
@@ -44,11 +44,11 @@ public class WeatherService
         if (File.Exists(filePath))
         {
             string existingJson = File.ReadAllText(filePath);
-            weatherDataList = JsonConvert.DeserializeObject<List<IWeatherData>>(existingJson) ?? new List<IWeatherData>();
+            weatherDataList = JsonConvert.DeserializeObject<List<object>>(existingJson) ?? [];
         }
         else
         {
-            weatherDataList = new List<IWeatherData>();
+            weatherDataList = [];
         }
 
         // Add the new weather data to the list
