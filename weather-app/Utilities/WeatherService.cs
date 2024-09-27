@@ -14,11 +14,11 @@ public class WeatherService
         HttpClient client = new HttpClient();
 
         HttpResponseMessage response = client.GetAsync(baseUrl).Result;
-        
+
         if (response.IsSuccessStatusCode)
         {
             string responseAsString = await response.Content.ReadAsStringAsync();
-            return isImperialUnits 
+            return isImperialUnits
                 ? JsonConvert.DeserializeObject<WeatherData<Imperial>>(responseAsString)
                 : JsonConvert.DeserializeObject<WeatherData<Metric>>(responseAsString);
         }
@@ -62,7 +62,7 @@ public class WeatherService
 
     public static string ReadJsonFromFile(string filePath) => File.Exists(filePath) ? File.ReadAllText(filePath) : string.Empty;
 
-    public static string GetJsonFileLocation() => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weather_data.json");
+    public static string GetJsonFileLocation(string filename) => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename);
 
     public static void EraseAllWeatherData(string filepath)
     {
