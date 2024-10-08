@@ -110,7 +110,7 @@ if (viewJsonResponse == "Y")
     }
 }
 
-if (File.Exists(WeatherService.GetJsonFileLocation("weather_data.json")))
+if (File.Exists(WeatherService.GetJsonFileLocation("weather_data_metric.json")) || File.Exists(WeatherService.GetJsonFileLocation("weather_data_imperial.json")))
 {
     Console.Write("Would you like the erase all of the weather data? (Y/N): ");
 
@@ -118,7 +118,8 @@ if (File.Exists(WeatherService.GetJsonFileLocation("weather_data.json")))
 
     if (deleteJsonFileResponse == "Y")
     {
-        WeatherService.EraseAllWeatherData(WeatherService.GetJsonFileLocation("weather_data.json"));
+        WeatherService.EraseAllWeatherData(WeatherService.GetJsonFileLocation("weather_data_metric.json"));
+        WeatherService.EraseAllWeatherData(WeatherService.GetJsonFileLocation("weather_data_imperial.json"));
         Console.WriteLine();
         Console.WriteLine("Successfully deleted weather data");
         Console.WriteLine();
