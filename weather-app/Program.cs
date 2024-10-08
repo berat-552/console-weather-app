@@ -22,8 +22,7 @@ while (userWantsToContinue)
     Console.Write("Enter city name for weather data: ");
     string cityNameInput = Console.ReadLine()!;
 
-    Console.WriteLine("Default units is 'Metric'");
-    Console.Write("Change units to Imperial? (Y/N): ");
+    Console.Write("The default units is 'Metric'. Would you like to change units to Imperial? (Y/N): ");
 
     string unitsInput = Console.ReadLine()!.ToUpper();
 
@@ -35,6 +34,7 @@ while (userWantsToContinue)
     {
         Console.WriteLine();
         Console.WriteLine(weatherData);
+        Console.WriteLine();
         string saveToFile;
 
         do
@@ -98,6 +98,17 @@ if (viewJsonResponse == "Y")
         Console.WriteLine();
         Console.WriteLine(jsonMetricWeatherData);
         Console.WriteLine();
+    }
+    else
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Metric weather data is empty.");
+        Console.WriteLine();
+        Console.ResetColor();
+    }
+
+    if (!string.IsNullOrEmpty(jsonImperialWeatherData))
+    {
         Console.WriteLine("=============================");
         Console.WriteLine("JSON Weather Data (Imperial):");
         Console.WriteLine();
@@ -105,13 +116,16 @@ if (viewJsonResponse == "Y")
     }
     else
     {
-        Console.WriteLine("No weather data found in the file.");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Imperial weather data is empty.");
         Console.WriteLine();
+        Console.ResetColor();
     }
 }
 
 if (File.Exists(WeatherService.GetJsonFileLocation("weather_data_metric.json")) || File.Exists(WeatherService.GetJsonFileLocation("weather_data_imperial.json")))
 {
+    Console.WriteLine();
     Console.Write("Would you like the erase all of the weather data? (Y/N): ");
 
     string deleteJsonFileResponse = Console.ReadLine()!.ToUpper();
