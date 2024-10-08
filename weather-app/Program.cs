@@ -70,7 +70,7 @@ while (userWantsToContinue)
     else
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Unable to retrieve weather data");
+        Console.WriteLine($"Weather data for city '{cityNameInput}' could not be retrieved. The city might not exist.");
         Console.ResetColor();
     }
 
