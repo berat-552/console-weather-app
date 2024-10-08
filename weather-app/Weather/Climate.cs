@@ -20,9 +20,30 @@ public class Climate<TUnits> : IClimate
     [JsonProperty("humidity")]
     public int Humidity { get; set; }
 
-    public override string ToString() =>
-        $"Temperature: {Temperature} {_units.Temperature}\n" +
+    [JsonProperty("temp_min")]
+    public double MinimumTemperature { get; set; }
+
+    [JsonProperty("temp_max")]
+    public double MaximumTemperature { get; set; }
+
+    [JsonProperty("sea_level")]
+    public int SeaLevel { get; set; }
+
+    [JsonProperty("grnd_level")]
+    public int GroundLevel { get; set; }
+
+    [JsonProperty("visibility")]
+    public int Visibility { get; set; }
+
+    public override string ToString()
+    {
+        return $"Temperature: {Temperature} {_units.Temperature}\n" +
+        $"Minimum Temperature: {MinimumTemperature}\n" +
+        $"Maximum Temperature: {MaximumTemperature}\n" +
         $"Feels Like: {FeelsLike} {_units.Temperature}\n" +
         $"Pressure: {Pressure} hPa\n" +
-        $"Humidity: {Humidity}%\n";
+        $"Humidity: {Humidity}%\n" +
+        $"Sea Level: {SeaLevel} hPa\n" +
+        $"Ground Level: {GroundLevel} hPa";
+    }
 }

@@ -19,13 +19,27 @@ public class WeatherData<TUnits> : IWeatherData
     [JsonProperty("wind")]
     public Wind Wind { get; set; } = new Wind();
 
+    [JsonProperty("sys")]
+    public SystemInfo SystemInfo = new SystemInfo();
+
+    [JsonProperty("visibility")]
+    public int Visibility { get; set; }
+
+    [JsonProperty("timezone")]
+    public int Timezone { get; set; }
+
     public IMeasurementUnits Units { get; } = new TUnits();
 
     public override string ToString()
     {
-        return $"City: {CityName}\n" +
+        return $"{SystemInfo}" +
+            $"Timezone: {Timezone} UTC \n" +
+            $"City: {CityName}\n" +
             $"Description: {Weather[0].Description}\n" +
             $"{Climate}\n" +
-            $"Wind Speed: {Wind.Speed} {Units.Speed}\n";
+            $"Wind Speed: {Wind.Speed} {Units.Speed}\n" +
+            $"Wind Gust: {Wind.Gust} {Units.Temperature}\n" +
+            $"Wind Degree: {Wind.Degree} {Units.Temperature}\n" +
+            $"Visibility: {Visibility}";
     }
 }
