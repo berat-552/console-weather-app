@@ -17,10 +17,9 @@ public class SystemInfo
     public int Sunset { get; set; }
     public override string ToString()
     {
-        return $"System Info:\n" +
-               $"ID: {Id}\n" +
-               $"Country: {Country}\n" +
-               $"Sunrise: {Sunrise}\n" +
-               $"Sunset: {Sunset}\n";
+        return $"ID: {Id}\n" +
+                $"Country: {Country}\n" +
+                $"Sunrise: {Sunrise}\n" +
+                $"Sunset: {Sunset}\n";
     }
 }
