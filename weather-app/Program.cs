@@ -120,8 +120,10 @@ if (File.Exists(WeatherService.GetJsonFileLocation("weather_data_metric.json")) 
         WeatherService.EraseAllWeatherData(WeatherService.GetJsonFileLocation("weather_data_metric.json"));
         WeatherService.EraseAllWeatherData(WeatherService.GetJsonFileLocation("weather_data_imperial.json"));
         Console.WriteLine();
+        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine("Successfully deleted weather data");
         Console.WriteLine();
+        Console.ResetColor();
     }
     else
     {
