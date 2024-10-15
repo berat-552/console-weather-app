@@ -38,9 +38,8 @@ public class WeatherService
     {
         List<object> weatherDataList;
 
-        InitializeWeatherDataFile(filePath); // Ensure the file is initialized
+        InitializeWeatherDataFile(filePath);
 
-        // Check if the file exists and read the existing data
         if (File.Exists(filePath))
         {
             string existingJson = File.ReadAllText(filePath);
@@ -51,13 +50,22 @@ public class WeatherService
             weatherDataList = [];
         }
 
-        // Add the new weather data to the list
         weatherDataList.Add(weatherData);
 
-        // Serialize the list to a JSON string
         string jsonString = JsonConvert.SerializeObject(weatherDataList, Formatting.Indented);
 
         File.WriteAllText(filePath, jsonString);
+    }
+
+    public static void SaveDataAndNotify(IWeatherData weatherData, bool isImperialUnits)
+    {
+        string fileName = isImperialUnits ? "weather_data_imperial.json" : "weather_data_metric.json";
+        string filePath = GetJsonFileLocation(fileName);
+
+        SaveWeatherDataToFile(weatherData, filePath);
+
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine($"Saved weather data of {weatherData.CityName} to the text file successfully!");
     }
 
     public static string ReadJsonFromFile(string filePath) => File.Exists(filePath) ? File.ReadAllText(filePath) : string.Empty;
@@ -66,9 +74,11 @@ public class WeatherService
 
     public static void EraseAllWeatherData(string filepath)
     {
-        if (File.Exists(filepath))
+        if (!File.Exists(filepath))
         {
-            File.Delete(filepath);
+            return;
         }
+
+        File.Delete(filepath);
     }
 }
