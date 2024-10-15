@@ -48,7 +48,6 @@ while (userWantsToContinue)
             if (isImperialUnits)
             {
                 string filePath = WeatherService.GetJsonFileLocation("weather_data_imperial.json");
-                WeatherService.InitializeWeatherDataFile(filePath);
                 WeatherService.SaveWeatherDataToFile(weatherData, filePath);
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine($"Saved weather data of {weatherData.CityName} to the text file successfully!");
