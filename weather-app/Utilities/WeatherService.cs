@@ -68,17 +68,50 @@ public class WeatherService
         Console.WriteLine($"Saved weather data of {weatherData.CityName} to the text file successfully!");
     }
 
-    public static string ReadJsonFromFile(string filePath) => File.Exists(filePath) ? File.ReadAllText(filePath) : string.Empty;
+    //public static string ReadJsonFromFile(string filePath) => File.Exists(filePath) ? File.ReadAllText(filePath) : string.Empty;
 
-    public static string GetJsonFileLocation(string filename) => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename);
-
-    public static void EraseAllWeatherData(string filepath)
+    public static FileData? GetFileData(string filepath)
     {
         if (!File.Exists(filepath))
         {
-            return;
+            return null;
         }
 
-        File.Delete(filepath);
+        return new FileData
+        {
+            Data = File.ReadAllText(filepath),
+            FilePath = filepath
+        };
     }
-}
+
+    public static void DisplayWeatherData(FileData? weatherData, string unit)
+    {
+        if (weatherData?.Data != null)
+        {
+            Console.WriteLine("=============================");
+            Console.WriteLine($"JSON Weather Data ({unit}):");
+            Console.WriteLine();
+            Console.WriteLine(weatherData.Data);
+            Console.WriteLine();
+        }
+        else
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"{unit} weather data is empty.");
+            Console.WriteLine();
+            Console.ResetColor();
+        }
+    }
+
+    public static string GetJsonFileLocation(string filename) => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename);
+
+        public static void EraseAllWeatherData(string filepath)
+        {
+            if (!File.Exists(filepath))
+            {
+                return;
+            }
+
+            File.Delete(filepath);
+        }
+    }

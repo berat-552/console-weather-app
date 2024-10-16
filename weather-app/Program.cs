@@ -73,42 +73,17 @@ string viewJsonResponse = Console.ReadLine()!.ToUpper();
 
 if (viewJsonResponse == "Y")
 {
-    string jsonMetricWeatherData = WeatherService.ReadJsonFromFile("weather_data_metric.json");
-    string jsonImperialWeatherData = WeatherService.ReadJsonFromFile("weather_data_imperial.json");
+    FileData? jsonMetricWeatherData = WeatherService.GetFileData("weather_data_metric.json");
+    FileData? jsonImperialWeatherData = WeatherService.GetFileData("weather_data_imperial.json");
 
-    if (!string.IsNullOrEmpty(jsonMetricWeatherData))
-    {
-        Console.WriteLine("=============================");
-        Console.WriteLine("JSON Weather Data (Metric):");
-        Console.WriteLine();
-        Console.WriteLine(jsonMetricWeatherData);
-        Console.WriteLine();
-    }
-    else
-    {
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("Metric weather data is empty.");
-        Console.WriteLine();
-        Console.ResetColor();
-    }
-
-    if (!string.IsNullOrEmpty(jsonImperialWeatherData))
-    {
-        Console.WriteLine("=============================");
-        Console.WriteLine("JSON Weather Data (Imperial):");
-        Console.WriteLine();
-        Console.WriteLine(jsonImperialWeatherData);
-    }
-    else
-    {
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("Imperial weather data is empty.");
-        Console.WriteLine();
-        Console.ResetColor();
-    }
+    WeatherService.DisplayWeatherData(jsonMetricWeatherData, "Metric");
+    WeatherService.DisplayWeatherData(jsonImperialWeatherData, "Imperial");
 }
 
-if (File.Exists(WeatherService.GetJsonFileLocation("weather_data_metric.json")) || File.Exists(WeatherService.GetJsonFileLocation("weather_data_imperial.json")))
+string metricFilePath = WeatherService.GetJsonFileLocation("weather_data_metric.json");
+string imperialFilePath = WeatherService.GetJsonFileLocation("weather_data_imperial.json");
+
+if (File.Exists(metricFilePath) || File.Exists(imperialFilePath))
 {
     Console.WriteLine();
     Console.Write("Would you like the erase all of the weather data? (Y/N): ");
@@ -117,8 +92,8 @@ if (File.Exists(WeatherService.GetJsonFileLocation("weather_data_metric.json")) 
 
     if (deleteJsonFileResponse == "Y")
     {
-        WeatherService.EraseAllWeatherData(WeatherService.GetJsonFileLocation("weather_data_metric.json"));
-        WeatherService.EraseAllWeatherData(WeatherService.GetJsonFileLocation("weather_data_imperial.json"));
+        WeatherService.EraseAllWeatherData(metricFilePath);
+        WeatherService.EraseAllWeatherData(imperialFilePath);
         Console.WriteLine();
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine("Successfully deleted weather data");
