@@ -15,6 +15,7 @@ public class SystemInfo
 
     [JsonProperty("sunset")]
     public int Sunset { get; set; }
+
     public override string ToString()
     {
         return $"ID: {Id}\n" +
