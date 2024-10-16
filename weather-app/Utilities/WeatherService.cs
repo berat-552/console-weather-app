@@ -68,8 +68,6 @@ public class WeatherService
         Console.WriteLine($"Saved weather data of {weatherData.CityName} to the text file successfully!");
     }
 
-    //public static string ReadJsonFromFile(string filePath) => File.Exists(filePath) ? File.ReadAllText(filePath) : string.Empty;
-
     public static FileData? GetFileData(string filepath)
     {
         if (!File.Exists(filepath))
