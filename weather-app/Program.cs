@@ -29,7 +29,7 @@ while (userWantsToContinue)
     bool isImperialUnits = (unitsInput.Equals("Y"));
 
     IWeatherData? weatherData = await WeatherService.GetWeatherData(cityNameInput, weatherApiKey, isImperialUnits);
-    // refactor to throw error earlier
+
     if (weatherData != null)
     {
         Console.WriteLine();
