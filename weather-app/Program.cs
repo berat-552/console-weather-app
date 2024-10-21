@@ -26,7 +26,7 @@ while (userWantsToContinue)
 
     string unitsInput = Console.ReadLine()!.ToUpper();
 
-    bool isImperialUnits = (unitsInput.Equals("Y"));
+    bool isImperialUnits = unitsInput.Equals("Y");
 
     IWeatherData? weatherData = await WeatherService.GetWeatherData(cityNameInput, weatherApiKey, isImperialUnits);
 
@@ -63,7 +63,7 @@ while (userWantsToContinue)
     Console.ResetColor();
     Console.Write("Do you want to search for another city? (Y/N): ");
     string userResponse = Console.ReadLine()!.ToUpper();
-    userWantsToContinue = (userResponse == "Y");
+    userWantsToContinue = userResponse == "Y";
 }
 
 Console.WriteLine();
