@@ -15,13 +15,11 @@ public class WeatherService
 
         HttpResponseMessage response = client.GetAsync(baseUrl).Result;
 
-        if (response.IsSuccessStatusCode)
-        {
-            string responseAsString = await response.Content.ReadAsStringAsync();
-            return isImperialUnits
-                ? JsonConvert.DeserializeObject<WeatherData<Imperial>>(responseAsString)
-                : JsonConvert.DeserializeObject<WeatherData<Metric>>(responseAsString);
-        }
+        if (!response.IsSuccessStatusCode) return null;
+        string responseAsString = await response.Content.ReadAsStringAsync();
+        return isImperialUnits
+            ? JsonConvert.DeserializeObject<WeatherData<Imperial>>(responseAsString)
+            : JsonConvert.DeserializeObject<WeatherData<Metric>>(responseAsString);
 
         return null;
     }
