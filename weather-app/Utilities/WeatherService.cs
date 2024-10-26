@@ -21,7 +21,6 @@ public class WeatherService
             ? JsonConvert.DeserializeObject<WeatherData<Imperial>>(responseAsString)
             : JsonConvert.DeserializeObject<WeatherData<Metric>>(responseAsString);
 
-        return null;
     }
 
     public static void InitializeWeatherDataFile(string filePath)
