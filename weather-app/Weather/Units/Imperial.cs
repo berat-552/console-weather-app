@@ -1,6 +1,4 @@
-﻿using weather_app.Weather.Units;
-
-namespace weather_app.Weather;
+﻿namespace weather_app.Weather.Units;
 
 public sealed class Imperial : IMeasurementUnits
 {
